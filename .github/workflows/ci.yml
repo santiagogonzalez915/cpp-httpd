@@ -48,9 +48,9 @@ jobs:
           ASAN_OPTIONS=detect_leaks=0 ./build/server_bin_asan /tmp/ci.conf &
           SERVER_PID=$!
           sleep 1
-          curl -sf http://localhost:6789/Makefile      | wc -c
-          curl -sf -X HEAD http://localhost:6789/Makefile
-          curl -sf -X OPTIONS http://localhost:6789/   | grep -c ""
+          curl -sf http://localhost:6789/Makefile > /dev/null
+          curl -sf --head http://localhost:6789/Makefile > /dev/null
+          curl -sf -X OPTIONS http://localhost:6789/ > /dev/null
           kill $SERVER_PID
 
       - name: Fuzz driver corpus run
