@@ -180,6 +180,29 @@ cpp-httpd/
 
 ---
 
+## Demo
+
+The `demo/` directory contains a self-contained site that exercises every feature from a browser. Run it from the project root:
+
+```bash
+make
+./build/server_bin demo/demo.conf
+# open http://localhost:6789
+```
+
+| Page | URL | What it demonstrates |
+|---|---|---|
+| Homepage | `/` | Feature index |
+| Static files | `/static/` | ETag, `Cache-Control`, `sendfile()` — inspect headers in DevTools |
+| Server status | `/cgi-bin/status.sh` | CGI `fork`/`exec`; shows live request count from access log |
+| Request inspector | `/cgi-bin/inspect.sh` | Parser output via CGI env; try `?key=value` query strings |
+| Admin area | `/admin/` | Basic Auth — browser prompts for credentials (`admin` / `demo`) |
+| Directory listing | `/files/` | Auto-generated via `opendir`/`readdir`; no `index.html` in that dir |
+
+Access log writes to `/tmp/cpp-httpd-demo-access.log`. The status page reads line count from that file on every request.
+
+---
+
 ## Build
 
 ```bash

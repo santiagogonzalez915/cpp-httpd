@@ -1,0 +1,20 @@
+{
+  "project": "cpp-httpd",
+  "language": "C++17",
+  "features": [
+    "kqueue/epoll event loop",
+    "sendfile() zero-copy",
+    "TLS 1.2+ via OpenSSL",
+    "virtual hosting",
+    "CGI fork/exec with timeout",
+    "Basic Auth via .htaccess",
+    "ETag + Range/206",
+    "Apache access log"
+  ],
+  "benchmark": {
+    "mode": "kqueue + sendfile",
+    "file_size": "4KB",
+    "rps": 28451,
+    "vs_nginx": "73%"
+  }
+}

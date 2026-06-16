@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>cpp-httpd</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<nav>
+  <a class="logo" href="/">cpp-httpd</a>
+  <a href="/static/">static</a>
+  <a href="/cgi-bin/status.sh">status</a>
+  <a href="/cgi-bin/inspect.sh">inspector</a>
+  <a href="/admin/">admin</a>
+  <a href="/files/">files</a>
+</nav>
+
+<main>
+  <h1>cpp-httpd</h1>
+  <p>
+    A C++17 HTTP/1.1 server built from scratch.
+    Each link below exercises a different feature running on this process right now.
+  </p>
+
+  <h2>Demos</h2>
+  <table>
+    <thead>
+      <tr><th>Feature</th><th>What it shows</th><th>Link</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Static files</td>
+        <td>ETag, <code>Cache-Control: max-age=3600</code>, <code>sendfile()</code></td>
+        <td><a href="/static/">→ static demo</a></td>
+      </tr>
+      <tr>
+        <td>CGI fork/exec</td>
+        <td>Dynamic page: time, request count, server info</td>
+        <td><a href="/cgi-bin/status.sh">→ server status</a></td>
+      </tr>
+      <tr>
+        <td>Request inspector</td>
+        <td>CGI environment — proves the parser is working</td>
+        <td><a href="/cgi-bin/inspect.sh">→ inspector</a></td>
+      </tr>
+      <tr>
+        <td>Basic Auth</td>
+        <td><code>.htaccess</code> credential check, 401 + <code>WWW-Authenticate</code></td>
+        <td><a href="/admin/">→ admin</a> <span class="muted">(admin / demo)</span></td>
+      </tr>
+      <tr>
+        <td>Directory listing</td>
+        <td>Auto-generated listing via <code>opendir</code>/<code>readdir</code></td>
+        <td><a href="/files/">→ /files/</a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Implementation highlights</h2>
+  <ul>
+    <li>kqueue (macOS) / epoll (Linux) — O(1) per event, no fd ceiling</li>
+    <li><code>sendfile()</code> — kernel moves file bytes to socket, zero user-space copies</li>
+    <li>4-phase pipeline: FindConfig → Access → Content → Log</li>
+    <li>TLS 1.2+ via OpenSSL on a separate port (run <code>make</code> then <code>scripts/gen_cert.sh</code>)</li>
+    <li>Apache Combined Log Format → <code>/tmp/cpp-httpd-demo-access.log</code></li>
+    <li>Catch2 unit tests (138 assertions), libFuzzer + ASAN on the HTTP parser</li>
+    <li>Benchmarked at 73% of nginx on 4 KB files; matches nginx on 1 MB</li>
+  </ul>
+
+  <h2>Source</h2>
+  <p><a href="https://github.com/santiagogonzalez915/cpp-httpd">github.com/santiagogonzalez915/cpp-httpd</a></p>
+</main>
+</body>
+</html>

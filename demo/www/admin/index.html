@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin — cpp-httpd</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<nav>
+  <a class="logo" href="/">cpp-httpd</a>
+  <a href="/static/">static</a>
+  <a href="/cgi-bin/status.sh">status</a>
+  <a href="/cgi-bin/inspect.sh">inspector</a>
+  <a href="/admin/">admin</a>
+  <a href="/files/">files</a>
+</nav>
+
+<main>
+  <h1>Admin area</h1>
+  <p>
+    <span class="tag tag-green">authenticated</span>
+    You passed Basic Auth. If you got here, the server verified your
+    <code>Authorization: Basic</code> header against <code>.htaccess</code>.
+  </p>
+
+  <h2>How it works</h2>
+  <p>
+    <code>AuthHandler</code> looks for <code>.htaccess</code> in the directory
+    of the requested resource. If found, it decodes the
+    <code>Authorization: Basic &lt;base64&gt;</code> header, compares the
+    credentials against the stored base64-encoded values, and returns
+    <code>401 Unauthorized</code> with a <code>WWW-Authenticate</code> header
+    if they don't match — which is what triggered your browser's login prompt.
+  </p>
+
+  <h2>The .htaccess file</h2>
+  <pre>AuthType Basic
+User YWRtaW4=      ← base64("admin")
+Password ZGVtbw==  ← base64("demo")</pre>
+
+  <div class="callout">
+    The credentials for this demo are <code>admin</code> / <code>demo</code>.
+    In a real deployment you'd use a stronger password and store a hash rather
+    than base64 — but the auth flow is identical.
+  </div>
+</main>
+</body>
+</html>

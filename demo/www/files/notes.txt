@@ -1,0 +1,12 @@
+cpp-httpd demo files
+====================
+
+This directory has no index.html.
+
+The directory listing you're viewing was generated automatically by
+DirectoryHandler using opendir/readdir. Directories sort before files;
+entries within each group sort alphabetically.
+
+Each row shows the file name, size (human-readable), and last-modified time
+read from stat(). The server HTML-escapes all names so paths with spaces
+or special characters display correctly.

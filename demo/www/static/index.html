@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Static file demo — cpp-httpd</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<nav>
+  <a class="logo" href="/">cpp-httpd</a>
+  <a href="/static/">static</a>
+  <a href="/cgi-bin/status.sh">status</a>
+  <a href="/cgi-bin/inspect.sh">inspector</a>
+  <a href="/admin/">admin</a>
+  <a href="/files/">files</a>
+</nav>
+
+<main>
+  <h1>Static file demo</h1>
+  <p>
+    This page and its assets (<code>/style.css</code>, <code>/static/app.js</code>)
+    are served by <code>StaticFileHandler</code> with ETag validation and
+    <code>sendfile()</code> zero-copy transfer.
+  </p>
+
+  <h2>Caching headers</h2>
+  <p>
+    Open DevTools → Network → reload this page. Select any response and look at
+    its headers. You should see:
+  </p>
+  <pre>ETag: "3a2f1c-2d4e-6b8f9a"   ← inode-size-mtime
+Cache-Control: max-age=3600
+Last-Modified: Mon, 16 Jun 2026 00:00:00 GMT</pre>
+  <p>
+    Reload again. The browser sends <code>If-None-Match</code> with the ETag.
+    The server checks it, and if the file is unchanged, returns
+    <code>304 Not Modified</code> — no body transferred.
+  </p>
+
+  <h2>JavaScript</h2>
+  <p>This page loads <code>/static/app.js</code>. Its output appears below:</p>
+  <div class="callout" id="js-output">
+    <span style="color:var(--muted)">waiting for JavaScript...</span>
+  </div>
+  <script src="/static/app.js"></script>
+
+  <h2>Range requests</h2>
+  <p>
+    The server supports <code>Range: bytes=N-M</code> (RFC 7233).
+    Try fetching the first 64 bytes of this stylesheet:
+  </p>
+  <pre>curl -H "Range: bytes=0-63" http://localhost:6789/style.css -i</pre>
+  <p>You'll get a <code>206 Partial Content</code> response with the exact byte slice.</p>
+
+  <h2>sendfile()</h2>
+  <p>
+    Static file bodies are transferred with <code>sendfile()</code> — the kernel
+    moves bytes from the page cache directly to the socket buffer without copying
+    through user space. The server never reads the file into a heap buffer.
+  </p>
+</main>
+</body>
+</html>
