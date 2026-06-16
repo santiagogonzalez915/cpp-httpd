@@ -1,0 +1,23 @@
+# Build outputs
+build/
+*.o
+*.dSYM/
+
+# TLS certificates — generate with scripts/gen_cert.sh
+tls/
+
+# Benchmark test files — generated on the fly
+test4k.html
+test1m.html
+
+# IDE
+.vscode/
+compile_commands.json
+.DS_Store
+
+# Stale class artifacts
+part_d.md
+http-meeting*/
+http_server.zip
+tcp.zip
+tcp/
