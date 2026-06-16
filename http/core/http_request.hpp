@@ -1,6 +1,7 @@
 #ifndef HTTP_REQUEST_HPP
 #define HTTP_REQUEST_HPP
 
+#include <cstdint>
 #include <string>
 #include <unordered_map>
 
