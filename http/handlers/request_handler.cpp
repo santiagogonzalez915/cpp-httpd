@@ -114,9 +114,8 @@ void RequestHandler::phase_access(PhaseContext& ctx) const {
     AuthResult auth = auth_handler->check_htaccess_and_auth(ctx.dir_of_resource, *ctx.request);
     if (auth == AuthResult::InvalidAuth || auth == AuthResult::MissingAuth) {
         ctx.response = HttpResponse(StatusCode::InvalidCredentials);
-        if (auth == AuthResult::MissingAuth) {
-            ctx.response.headers["WWW-Authenticate"] = "Basic realm=\"Restricted Files\"";
-        }
+        ctx.response.headers["WWW-Authenticate"] = "Basic realm=\"Restricted Files\"";
+        ctx.response.headers["Content-Length"] = "0";
         ctx.response_ready = true;
         return;
     }
